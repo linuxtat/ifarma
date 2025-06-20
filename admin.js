@@ -9,6 +9,7 @@ import {
   collection,
   getDocs,
   updateDoc,
+  deleteDoc,
   doc
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
@@ -35,23 +36,28 @@ onAuthStateChanged(auth, async user => {
     window.location.href = "index.html";
     return;
   }
+  await loadInvestments();
+});
 
+async function loadInvestments() {
   const snapshot = await getDocs(collection(db, "investments"));
   investmentList.innerHTML = "";
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
+    const id = docSnap.id;
     const div = document.createElement("div");
     div.style.marginBottom = "10px";
 
     div.innerHTML = `
       📅 ${data.date} — 💰 ৳${data.amount} — ইউজার: ${data.userId} <br/>
-      লাভ: <input type="number" id="profit-${docSnap.id}" value="${data.profitPercent || 0}" style="width: 60px;" />%
-      <button onclick="updateProfit('${docSnap.id}')">Update</button>
+      লাভ: <input type="number" id="profit-${id}" value="${data.profitPercent || 0}" style="width: 60px;" />%
+      <button onclick="updateProfit('${id}')">Update</button>
+      <button onclick="deleteInvestment('${id}')">Delete</button>
       <hr/>
     `;
     investmentList.appendChild(div);
   });
-});
+}
 
 window.updateProfit = async (id) => {
   const input = document.getElementById(`profit-${id}`);
@@ -59,6 +65,14 @@ window.updateProfit = async (id) => {
   const ref = doc(db, "investments", id);
   await updateDoc(ref, { profitPercent: percent });
   alert("Updated profit %!");
+};
+
+window.deleteInvestment = async (id) => {
+  if (confirm("Are you sure to delete this investment?")) {
+    await deleteDoc(doc(db, "investments", id));
+    alert("Investment deleted!");
+    await loadInvestments();
+  }
 };
 
 logoutBtn.onclick = () => {
