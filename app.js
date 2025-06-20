@@ -1,20 +1,20 @@
-// Firebase Config (Demo Project)
+// Firebase Import ও কনফিগ
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged
+  signOut
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-// ✅ ডেমো প্রজেক্ট (public config - শুধু টেস্টের জন্য)
 const firebaseConfig = {
-  apiKey: "AIzaSyA37xX-pV1D_t3chvzZ7l8ov3EeFQzqR2A",
-  authDomain: "demo-ifarmer.firebaseapp.com",
-  projectId: "demo-ifarmer",
-  storageBucket: "demo-ifarmer.appspot.com",
-  messagingSenderId: "999999999999",
-  appId: "1:999999999999:web:abcdef123456"
+  apiKey: "AIzaSyCeREJBh-U0sR8MhMIThRXCOkx1eXVXWCs",
+  authDomain: "test-6700c.firebaseapp.com",
+  projectId: "test-6700c",
+  storageBucket: "test-6700c.firebasestorage.app",
+  messagingSenderId: "1038779488637",
+  appId: "1:1038779488637:web:4a9c7cfeaaadeb07699414",
+  measurementId: "G-BZWPDKZV0G"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -25,14 +25,23 @@ const modal = document.getElementById("loginModal");
 document.getElementById("loginBtn").onclick = () => modal.style.display = "flex";
 document.getElementById("closeModal").onclick = () => modal.style.display = "none";
 
+// Helper function: admin বা user আলাদা রিডাইরেকশন
+const redirectUser = (email) => {
+  if (email.startsWith("admin13")) {
+    window.location.href = "admin.html";
+  } else {
+    window.location.href = "dashboard.html";
+  }
+};
+
 // Sign Up
 document.getElementById("signup").onclick = () => {
   const email = document.getElementById("email").value;
   const pass = document.getElementById("password").value;
   createUserWithEmailAndPassword(auth, email, pass)
-    .then(() => {
+    .then(userCred => {
       alert("Account created successfully!");
-      window.location.href = "dashboard.html";
+      redirectUser(userCred.user.email);
     })
     .catch(err => alert("Error: " + err.message));
 };
@@ -42,9 +51,9 @@ document.getElementById("signin").onclick = () => {
   const email = document.getElementById("email").value;
   const pass = document.getElementById("password").value;
   signInWithEmailAndPassword(auth, email, pass)
-    .then(() => {
+    .then(userCred => {
       alert("Logged in successfully!");
-      window.location.href = "dashboard.html";
+      redirectUser(userCred.user.email);
     })
     .catch(err => alert("Error: " + err.message));
 };
