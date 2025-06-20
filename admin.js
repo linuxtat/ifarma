@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import {
   getAuth,
-  onAuthStateChanged
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 import {
   getFirestore,
@@ -12,12 +13,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA37xX-pV1D_t3chvzZ7l8ov3EeFQzqR2A",
-  authDomain: "demo-ifarmer.firebaseapp.com",
-  projectId: "demo-ifarmer",
-  storageBucket: "demo-ifarmer.appspot.com",
-  messagingSenderId: "999999999999",
-  appId: "1:999999999999:web:abcdef123456"
+  apiKey: "AIzaSyCeREJBh-U0sR8MhMIThRXCOkx1eXVXWCs",
+  authDomain: "test-6700c.firebaseapp.com",
+  projectId: "test-6700c",
+  storageBucket: "test-6700c.firebasestorage.app",
+  messagingSenderId: "1038779488637",
+  appId: "1:1038779488637:web:4a9c7cfeaaadeb07699414",
+  measurementId: "G-BZWPDKZV0G"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -25,6 +27,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const investmentList = document.getElementById("investmentList");
+const logoutBtn = document.getElementById("logoutBtn");
 
 onAuthStateChanged(auth, async user => {
   if (!user || !user.email.startsWith("admin13")) {
@@ -34,13 +37,14 @@ onAuthStateChanged(auth, async user => {
   }
 
   const snapshot = await getDocs(collection(db, "investments"));
+  investmentList.innerHTML = "";
   snapshot.forEach(docSnap => {
     const data = docSnap.data();
     const div = document.createElement("div");
     div.style.marginBottom = "10px";
 
     div.innerHTML = `
-      📅 ${data.date} — 💰 ৳${data.amount} <br/>
+      📅 ${data.date} — 💰 ৳${data.amount} — ইউজার: ${data.userId} <br/>
       লাভ: <input type="number" id="profit-${docSnap.id}" value="${data.profitPercent || 0}" style="width: 60px;" />%
       <button onclick="updateProfit('${docSnap.id}')">Update</button>
       <hr/>
@@ -55,4 +59,11 @@ window.updateProfit = async (id) => {
   const ref = doc(db, "investments", id);
   await updateDoc(ref, { profitPercent: percent });
   alert("Updated profit %!");
+};
+
+logoutBtn.onclick = () => {
+  signOut(auth).then(() => {
+    alert("Logged out.");
+    window.location.href = "index.html";
+  });
 };
