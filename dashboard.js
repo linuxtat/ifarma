@@ -1,18 +1,26 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
 import {
-  getAuth, onAuthStateChanged
+  getAuth,
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 import {
-  getFirestore, collection, addDoc, query, where, getDocs
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA37xX-pV1D_t3chvzZ7l8ov3EeFQzqR2A",
-  authDomain: "demo-ifarmer.firebaseapp.com",
-  projectId: "demo-ifarmer",
-  storageBucket: "demo-ifarmer.appspot.com",
-  messagingSenderId: "999999999999",
-  appId: "1:999999999999:web:abcdef123456"
+  apiKey: "AIzaSyCeREJBh-U0sR8MhMIThRXCOkx1eXVXWCs",
+  authDomain: "test-6700c.firebaseapp.com",
+  projectId: "test-6700c",
+  storageBucket: "test-6700c.firebasestorage.app",
+  messagingSenderId: "1038779488637",
+  appId: "1:1038779488637:web:4a9c7cfeaaadeb07699414",
+  measurementId: "G-BZWPDKZV0G"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -23,10 +31,10 @@ const amountInput = document.getElementById("amount");
 const dateInput = document.getElementById("date");
 const submitBtn = document.getElementById("submitInvestment");
 const investmentList = document.getElementById("investmentList");
+const logoutBtn = document.getElementById("logoutBtn");
 
 let currentUser = null;
 
-// ইউজার লগইন চেক
 onAuthStateChanged(auth, user => {
   if (user) {
     currentUser = user;
@@ -37,7 +45,6 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-// ইনভেস্টমেন্ট সাবমিশন
 submitBtn.onclick = async () => {
   const amount = parseFloat(amountInput.value);
   const date = dateInput.value;
@@ -45,21 +52,18 @@ submitBtn.onclick = async () => {
     alert("Please enter both amount and date.");
     return;
   }
-
   await addDoc(collection(db, "investments"), {
     userId: currentUser.uid,
     amount,
     date,
-    profitPercent: 0, // শুরুতে 0%, অ্যাডমিন পরে সেট করবে
+    profitPercent: 0,
   });
-
   alert("Investment submitted!");
   amountInput.value = "";
   dateInput.value = "";
   loadInvestments(currentUser.uid);
 };
 
-// ইউজারের ইনভেস্টমেন্ট লোড করা
 async function loadInvestments(userId) {
   investmentList.innerHTML = "";
   const q = query(collection(db, "investments"), where("userId", "==", userId));
@@ -72,3 +76,10 @@ async function loadInvestments(userId) {
     </li>`;
   });
 }
+
+logoutBtn.onclick = () => {
+  signOut(auth).then(() => {
+    alert("Logged out.");
+    window.location.href = "index.html";
+  });
+};
