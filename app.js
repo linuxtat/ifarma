@@ -3,7 +3,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebas
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
 // ✅ ডেমো প্রজেক্ট (public config - শুধু টেস্টের জন্য)
@@ -24,20 +25,26 @@ const modal = document.getElementById("loginModal");
 document.getElementById("loginBtn").onclick = () => modal.style.display = "flex";
 document.getElementById("closeModal").onclick = () => modal.style.display = "none";
 
-// Signup
+// Sign Up
 document.getElementById("signup").onclick = () => {
   const email = document.getElementById("email").value;
   const pass = document.getElementById("password").value;
   createUserWithEmailAndPassword(auth, email, pass)
-    .then(() => alert("Account created successfully!"))
+    .then(() => {
+      alert("Account created successfully!");
+      window.location.href = "dashboard.html";
+    })
     .catch(err => alert("Error: " + err.message));
 };
 
-// Signin
+// Sign In
 document.getElementById("signin").onclick = () => {
   const email = document.getElementById("email").value;
   const pass = document.getElementById("password").value;
   signInWithEmailAndPassword(auth, email, pass)
-    .then(() => alert("Logged in successfully!"))
+    .then(() => {
+      alert("Logged in successfully!");
+      window.location.href = "dashboard.html";
+    })
     .catch(err => alert("Error: " + err.message));
 };
