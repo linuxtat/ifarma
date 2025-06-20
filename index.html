@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>iFarmer Clone</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header>
+    <h1>iFarmer</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Solutions</a>
+      <a href="#">Blog</a>
+      <a href="#">Contact</a>
+      <button id="loginBtn">Login</button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Empowering Agriculture with Finance & Technology</h2>
+    <p>Connecting farmers, funders, and market.</p>
+  </section>
+
+  <section class="services">
+    <h3>Our Services</h3>
+    <div class="service-boxes">
+      <div class="box">Farmer Support</div>
+      <div class="box">Funder Platform</div>
+      <div class="box">IoT Tracking</div>
+    </div>
+  </section>
+
+  <!-- Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span id="closeModal">&times;</span>
+      <h2>Login / Sign Up</h2>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+      <button id="signup">Sign Up</button>
+      <button id="signin">Login</button>
+    </div>
+  </div>
+</body>
+</html>
