@@ -74,3 +74,13 @@ nav a {
   float: right;
   cursor: pointer;
 }
+
+#logoutBtn {
+  margin-top: 10px;
+  padding: 8px 15px;
+  background: #008040;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
