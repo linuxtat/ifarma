@@ -2,21 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>User Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
-  <script type="module" src="dashboard.js"></script>
+  <title>Dashboard</title>
 </head>
 <body>
-  <h2>🧾 Investment Dashboard</h2>
+  <h2>📥 ইনভেস্টমেন্ট</h2>
+  টাকা: <input type="number" id="amount" />
+  তারিখ: <input type="date" id="date" />
+  <button id="submitInvestment">Submit</button>
+
+  <ul id="investmentList"></ul>
+
+  <hr/>
+
+  <h2>📤 ছবি আপলোড করুন</h2>
+  <input type="file" id="imageUpload" />
+  <button id="uploadBtn">Upload</button>
+
+  <h2>📁 My Files</h2>
+  <div id="fileList"></div>
+
+  <br/>
   <button id="logoutBtn">Logout</button>
 
-  <div>
-    <input type="number" id="amount" placeholder="Investment Amount" />
-    <input type="date" id="date" />
-    <button id="submitInvestment">Submit Investment</button>
-  </div>
-
-  <h3>Your Investments:</h3>
-  <ul id="investmentList"></ul>
+  <script type="module" src="dashboard.js"></script>
 </body>
 </html>
