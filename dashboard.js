@@ -52,12 +52,15 @@ submitBtn.onclick = async () => {
     alert("Please enter both amount and date.");
     return;
   }
+
   await addDoc(collection(db, "investments"), {
     userId: currentUser.uid,
     amount,
     date,
     profitPercent: 0,
+    status: "pending"
   });
+
   alert("Investment submitted!");
   amountInput.value = "";
   dateInput.value = "";
@@ -73,6 +76,7 @@ async function loadInvestments(userId) {
     const profit = data.amount * (data.profitPercent || 0) / 100;
     investmentList.innerHTML += `<li>
       📅 ${data.date} — 💰 ৳${data.amount} — লাভ: ৳${profit.toFixed(2)} (${data.profitPercent || 0}%)
+      — <strong>Status: ${data.status || "pending"}</strong>
     </li>`;
   });
 }
