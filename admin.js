@@ -49,9 +49,13 @@ async function loadInvestments() {
     div.style.marginBottom = "10px";
 
     div.innerHTML = `
-      📅 ${data.date} — 💰 ৳${data.amount} — ইউজার: ${data.userId} <br/>
+      📅 ${data.date} — 💰 ৳${data.amount} — ইউজার: ${data.userId}<br/>
       লাভ: <input type="number" id="profit-${id}" value="${data.profitPercent || 0}" style="width: 60px;" />%
       <button onclick="updateProfit('${id}')">Update</button>
+      ${data.status !== "approved"
+        ? `<button onclick="approveInvestment('${id}')">Approve</button>`
+        : `<span>✅ Approved</span>`
+      }
       <button onclick="deleteInvestment('${id}')">Delete</button>
       <hr/>
     `;
@@ -65,6 +69,14 @@ window.updateProfit = async (id) => {
   const ref = doc(db, "investments", id);
   await updateDoc(ref, { profitPercent: percent });
   alert("Updated profit %!");
+  await loadInvestments();
+};
+
+window.approveInvestment = async (id) => {
+  const ref = doc(db, "investments", id);
+  await updateDoc(ref, { status: "approved" });
+  alert("Investment approved!");
+  await loadInvestments();
 };
 
 window.deleteInvestment = async (id) => {
